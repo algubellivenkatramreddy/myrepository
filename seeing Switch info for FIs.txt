@@ -1,0 +1,26 @@
+connect UCS from SSH
+
+connect nxos
+
+icdfi-share-A# connect nxos
+
+icdfi-share-A(nxos)# show cdp neighbors
+
+out put will be like below
+
+Device-ID             Local Intrfce Hldtme Capability  Platform      Port ID
+icds1-mgmt.ssh(FDO20421MCH)
+                       mgmt0         132    R S I s   N9K-C9372PX   Eth105/1/20     ----mgmt                                                                                                                             
+icdr2-share(JAF1429CJNC)
+                       Eth1/1        146    R S I s   N7K-C7010     Eth1/5      --prod                                                                                                                                
+icdr1-share(JAF1429CKFH)
+                       Eth1/2        156    R S I s   N7K-C7010     Eth1/5        --prod                                                                                                                              
+icdr4-replication(SAL2027SWN7)
+                       Eth1/5        172    R S I s   N9K-C9396PX   Eth1/17       --repnet                                                                                                                              
+icdr3-replication(SAL2034UPAB)
+                       Eth1/6        179    R S I s   N9K-C9396PX   Eth1/17    --repnet                                                                                                                                 
+icdr2-management(JAF1429CJNC)
+                       Eth1/7        156    R S I s   N7K-C7010     Eth1/21 ---management
+icdr1-management(JAF1429CKFH)
+                       Eth1/8        146    R S I s   N7K-C7010     Eth1/21  ---management
+
