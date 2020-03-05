@@ -1,0 +1,35 @@
+
+
+[root@wcdvhp01h07:~] esxcli vsan debug resync list
+Group UUID                            Object UUID                           Component UUID                        To Host       GB Left To Resync  Intent
+------------------------------------  ------------------------------------  ------------------------------------  ------------  -----------------  ----------
+a0de215b-3ae9-a8c5-a512-0025b5da034e  a6de215b-f211-946d-8b9b-0025b5da034e  a6de215b-c6bd-c470-ae66-0025b5da034e  wcdvhp01h09.  8.02               Compliance
+a0de215b-3ae9-a8c5-a512-0025b5da034e  a6de215b-f211-946d-8b9b-0025b5da034e  * (all 1 components)                  --            8.02               --
+a0de215b-3ae9-a8c5-a512-0025b5da034e  * (all 1 objects)                     * (all 1 components)                  --            8.02               --
+0a5cf65b-bc1e-c6e2-5a33-0025b5da052b  0b5cf65b-4ccd-adae-4e1a-0025b5da052b  0b5cf65b-a41d-86b0-1722-0025b5da052b  wcdvhp01h07.  0.02               Compliance
+0a5cf65b-bc1e-c6e2-5a33-0025b5da052b  0b5cf65b-4ccd-adae-4e1a-0025b5da052b  * (all 1 components)                  --            0.02               --
+0a5cf65b-bc1e-c6e2-5a33-0025b5da052b  * (all 1 objects)                     * (all 1 components)                  --            0.02               --
+4281f45b-8897-c9c2-6059-0025b5da01fe  4381f45b-8228-5268-8ebb-0025b5da01fe  4381f45b-4086-0d6a-eb7c-0025b5da01fe  wcdvhp01h07.  0.02               Compliance
+4281f45b-8897-c9c2-6059-0025b5da01fe  4381f45b-8228-5268-8ebb-0025b5da01fe  * (all 1 components)                  --            0.02               --
+4281f45b-8897-c9c2-6059-0025b5da01fe  * (all 1 objects)                     * (all 1 components)                  --            0.02               --
+47ddf15b-08dd-d7e5-f27c-0025b5da0c0e  48ddf15b-8ef3-8d98-acd3-0025b5da0c0e  48ddf15b-ced1-9c9a-43c4-0025b5da0c0e  wcdvhp01h07.  0.03               Compliance
+47ddf15b-08dd-d7e5-f27c-0025b5da0c0e  48ddf15b-8ef3-8d98-acd3-0025b5da0c0e  * (all 1 components)                  --            0.03               --
+47ddf15b-08dd-d7e5-f27c-0025b5da0c0e  * (all 1 objects)                     * (all 1 components)                  --            0.03               --
+[root@wcdvhp01h07:~]
+
+to see vmnames with object ID VMware have internal script that is./domtool
+
+from GUI--cluster--Monitor-Resyncing Components
+Name,VM Storage Policy,Host,Bytes Left to Resync,ETA,Intent
+wnpdcessdc2wc09,--,--,8.02 GB,Unknown,
+                 Hard disk 1 - wnpdcessdc2wc09.vmdk,--,--,8.02 GB,Unknown,
+                                  Component,--,wcdvhp01h09.dstcorp.net,8.02 GB,Unknown,Compliance
+rhel7-ap-99999-1.0.103-SNAPSHOT-20181120154554,--,--,16.94 MB,Unknown,
+                 Hard disk 1,Default-ChecksumDisabled,--,16.94 MB,Unknown,
+                                  Component,--,wcdvhp01h07.dstcorp.net,16.94 MB,Unknown,Compliance
+rhel7-ap-11880-1.0.0-SNAPSHOT-20181122012732,--,--,16.94 MB,Unknown,
+                 Hard disk 1,Default-ChecksumDisabled,--,16.94 MB,Unknown,
+                                  Component,--,wcdvhp01h07.dstcorp.net,16.94 MB,Unknown,Compliance
+rhel7-db-11690-4.1-SNAPSHOT-20181118153622,--,--,26.94 MB,Unknown,
+                 Hard disk 1,Default-ChecksumDisabled,--,26.94 MB,Unknown,
+                                  Component,--,wcdvhp01h07.dstcorp.net,26.94 MB,Unknown,Compliance

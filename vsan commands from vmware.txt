@@ -1,0 +1,406 @@
+https://kb.vmware.com/s/article/1036609 --disk part util
+
+https://www.vmware.com/resources/compatibility/detail.php?deviceCategory=vsanio&productid=42186  -compatibility guide 
+
+esxcfg-advcfg -s 98 /VSAN/ClomRebalanceThreshold
+vsish -e set vmkModules/vsan/dom/MaxNumResyncCopyInFlight 50
+
+
+
+
+connect vcenter through vami
+ex: https://vapwcvcenter01:5480 ..enable ssh
+connect through putty vcenters
+
+to register a vm to inventory for vm removed from inventory:
+vim-cmd solo/register /vmfs/volumes/vsan:521c1f34a38d41a2-b183688389e81cb4/77566d5b-e2df-ca38-45d6-0025b5da012c/uxlwsargwebrx01.vmx
+
+other commands 
+*************************
+
+Command> shell
+Shell access is granted to root
+root@vapwcvcenter01 [ ~ ]# clear
+root@vapwcvcenter01 [ ~ ]#
+root@vapwcvcenter01 [ ~ ]# rvc localhost
+Install the "ffi" gem for better tab completion.
+WARNING: Nokogiri was built against LibXML version 2.9.4, but has dynamically loaded 2.9.8
+The authenticity of host 'localhost' can't be established.
+Public key fingerprint is cbb7674ca016da18184d95462ae8efab460f642522c673f18de70391efc167bd.
+Are you sure you want to continue connecting (y/n)? y
+Warning: Permanently added 'localhost' (vim) to the list of known hosts
+Using default username "administrator@vsphere.local".
+password:
+password:
+Welcome to RVC. Try the 'help' command.
+0 /
+1 localhost/
+> ls
+0 /
+1 localhost/
+> cd 1
+/localhost> ls
+0 WC (datacenter)
+/localhost> cd 0
+/localhost/WC> ls
+0 storage/
+1 computers [host]/
+2 networks [network]/
+3 datastores [datastore]/
+4 vms [vm]/
+/localhost/WC> cd 1
+/localhost/WC/computers> ls
+0 WC_PROD (cluster): cpu 1480 GHz, memory 9415 GB
+/localhost/WC/computers> cd 0
+/localhost/WC/computers/WC_PROD> ls
+0 hosts/
+1 resourcePool [Resources]: cpu 1480.69/1480.69/normal, mem 9415.32/9415.32/normal
+/localhost/WC/computers/WC_PROD> cd 0
+/localhost/WC/computers/WC_PROD/hosts> ls
+0 wcdvhp01h04.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+1 wcdvhp02h09.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+2 wcdvhp04h09.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+3 wcdvhp03h04.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+4 wcdvhp05h08.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+5 wcdvhp06h08.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+6 wcdvhp07h09.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+7 wcdvhp02h03.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+8 wcdvhp06h02.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+9 wcdvhp01h03.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+10 wcdvhp03h03.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+11 wcdvhp07h01.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+12 wcdvhp07h02.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+13 wcdvhp07h04.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+14 wcdvhp02h04.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+15 wcdvhp04h02.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+16 wcdvhp05h01.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+17 wcdvhp05h03.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+18 wcdvhp01h10.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+19 wcdvhp05h06.dstcorp.net (host): cpu 2*16*2.59 GHz, memory 549.00 GB
+/localhost/WC/computers/WC_PROD/hosts> cd ..
+/localhost/WC/computers/WC_PROD> vsan.re
+vsan.reapply_vsan_vmknic_config  vsan.recover_spbm                vsan.resync_dashboard
+/localhost/WC/computers/WC_PROD> vsan.re
+vsan.reapply_vsan_vmknic_config  vsan.recover_spbm                vsan.resync_dashboard
+/localhost/WC/computers/WC_PROD> vsan.resync_dashboard .
+2019-02-13 04:46:07 +0000: Querying all VMs on vSAN ...
+2019-02-13 04:46:10 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 04:46:10 +0000: Got all the info, computing table ...
++-----------+-----------------+---------------+
+| VM/Object | Syncing objects | Bytes to sync |
++-----------+-----------------+---------------+
++-----------+-----------------+---------------+
+| Total     | 0               | 0.00 GB       |
++-----------+-----------------+---------------+
+/localhost/WC/computers/WC_PROD> vsan.check_state .
+2019-02-13 04:46:31 +0000: Step 1: Check for inaccessible vSAN objects
+Detected 0 objects to be inaccessible
+
+2019-02-13 04:46:31 +0000: Step 2: Check for invalid/inaccessible VMs
+Detected VM 'uxlwsargwebrx01' as being 'invalid'
+
+2019-02-13 04:46:31 +0000: Step 3: Check for VMs for which VC/hostd/vmx are out of sync
+Did not find VMs for which VC/hostd/vmx are out of sync
+
+/localhost/WC/computers/WC_PROD> vsan.check_state . -r
+2019-02-13 04:46:47 +0000: Step 1: Check for inaccessible vSAN objects
+
+2019-02-13 04:46:52 +0000: Step 1b: Check for inaccessible vSAN objects, again
+
+2019-02-13 04:46:53 +0000: Step 2: Check for invalid/inaccessible VMs
+Detected VM 'uxlwsargwebrx01' as being 'invalid', reloading ...
+
+2019-02-13 04:46:53 +0000: Step 2b: Check for invalid/inaccessible VMs again
+Detected VM 'uxlwsargwebrx01' as still 'invalid'
+
+2019-02-13 04:46:53 +0000: Step 3: Check for VMs for which VC/hostd/vmx are out of sync
+Did not find VMs for which VC/hostd/vmx are out of sync
+
+/localhost/WC/computers/WC_PROD> vsan.resync_dashboard . -r 30
+2019-02-13 06:08:18 +0000: Querying all VMs on vSAN ...
+2019-02-13 06:08:21 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:08:21 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 35.59 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 486.26 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 246.95 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 768.79 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:08:51 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:08:51 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 34.38 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 484.42 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 246.39 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 765.19 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:09:21 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:09:21 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 33.14 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 482.39 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 245.94 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 761.47 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:09:51 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:09:51 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 32.00 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 480.24 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 245.51 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 757.75 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:10:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:10:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 30.88 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 478.29 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 245.05 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 754.21 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:10:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:10:52 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 29.67 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 476.32 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 244.51 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 750.51 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:11:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:11:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 28.66 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 474.22 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 243.90 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 746.77 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:11:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:11:52 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 27.61 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 472.14 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 243.18 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 742.94 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:12:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:12:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 26.53 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 469.99 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 242.46 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 738.99 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:12:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:12:52 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 25.36 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 467.94 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 241.68 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 734.99 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:13:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:13:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 24.09 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 465.87 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 240.78 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 730.74 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:13:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:13:52 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 23.08 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 463.72 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 240.03 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 726.82 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:14:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:14:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 21.85 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 461.57 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 239.30 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 722.72 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:14:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:14:52 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 20.60 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 459.52 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 238.63 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 718.75 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:15:22 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:15:22 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 19.44 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 457.11 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 237.58 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 714.13 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:15:52 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:15:53 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 18.24 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 454.44 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 236.55 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 709.23 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:16:23 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:16:23 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 16.99 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 452.19 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 235.75 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 704.93 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:16:53 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:16:53 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 15.78 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 449.68 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 234.96 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 700.41 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:17:23 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:17:23 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 14.58 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 447.38 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 234.18 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 696.13 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:17:53 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:17:53 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
+|    [WC_PROD_VSAN] a5f4715b-f271-b017-ce99-0025b5da008d/uxpdbhsspwhrp01_2.vmdk |                 | 13.40 GB      |
+| uxpapessfredn01                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8ed7f25b-3099-d167-f200-0025b5da0dfb/uxpapessfredn01_2.vmdk |                 | 445.04 GB     |
+| uxpapessfredn03                                                               | 1               |               |
+|    [WC_PROD_VSAN] 8b13f35b-9e79-839e-f52f-0025b5da068d/uxpapessfredn03_2.vmdk |                 | 233.40 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| Total                                                                         | 3               | 691.84 GB     |
++-------------------------------------------------------------------------------+-----------------+---------------+
+2019-02-13 06:18:23 +0000: Querying all objects in the system from wcdvhp01h04.dstcorp.net ...
+2019-02-13 06:18:23 +0000: Got all the info, computing table ...
++-------------------------------------------------------------------------------+-----------------+---------------+
+| VM/Object                                                                     | Syncing objects | Bytes to sync |
++-------------------------------------------------------------------------------+-----------------+---------------+
+| uxpdbhsspwhrp01                                                               | 1               |               |
