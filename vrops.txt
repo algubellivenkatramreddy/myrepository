@@ -1,0 +1,20 @@
+https://www.youtube.com/watch?v=WCLJ40abips --vrops full video (zero - full use) nice video
+
+alerts and automated reports configure:
+https://www.youtube.com/playlist?list=PLmp0id7yKiEclPbge6XMVZnQtndtiuMlB
+*********************************************************************************
+need search to look video 
+1) how to configure notification setting in vrops
+2) Reports
+****************************************************************************
+vRealize Operations Manager 7.5 Configuration Maximums
+https://docs.vmware.com/en/vRealize-Operations-Manager/index.html
+
+
+sizing guideline kb article 2150421
+****************************************************
+
+Thomgreene.com/vrops  ---blog
+
+
+https://www.youtube.com/playlist?list=PLmp0id7yKiEclPbge6XMVZnQtndtiuMlB
