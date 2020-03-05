@@ -1,0 +1,55 @@
+#specify the constants for the host
+
+$myhost="DSKCVHWCHETD18"
+$sd="dstcorp.net"
+$vhost=$myhost+"."+$sd
+$myntpserver="10.192.78.81", "10.192.78.82"
+$dns="10.192.75.72","10.193.75.72"
+$dc="WC"
+$vlan="3049"
+$mask="255.255.255.0"
+$vIP="192.168.216.5"
+$vsw="vSwitch0"
+$vpg="vMotion"
+
+# Add vmnic1 to vSwitch0 # 
+get-virtualswitch -name "vSwitch0" -VMHost $vhost|Add-VirtualSwitchPhysicalNetworkAdapter -VMHostPhysicalNic (get-vmhost $vhost|Get-VMHostNetworkAdapter -Physical -name "vmnic1") -Confirm:$false
+#make both the NIC vmnic0 and vmnic1 active on standard switch on the host
+Get-VirtualSwitch -VMHost $vhost -name vSwitch0|Get-NicTeamingPolicy|Set-NicTeamingPolicy -MakeNicActive vmnic0,vmnic1
+#NTP settings
+Get-VMHost $vhost| Add-VMHostNtpServer -NtpServer $myntpserver
+#DNS settings and custom search dns
+Get-VMHostNetwork -VMHost $vhost| Set-VMHostNetwork -HostName $myhost -DNSAddress $dns -SearchDomain $sd  -Confirm:$false
+
+<#enable ssh and set startup policy
+Policy is the start up mode.
+
+Automatic = Start automatically if any ports are open, and stop when all ports are closed
+On = Start and stop with host
+Off = Start and stop manually#>
+$service=Get-VMHostService -vmhost $vhost
+# Setting ssh to start and stop with host
+$service|?{$_.key -eq "TSM-SSH"}|Set-VMHostService -Policy "on" -Confirm:$false
+#starting the ssh service
+$service|?{$_.key -eq "TSM-SSH"}|Start-VMHostService -Confirm:$false
+#start ntp
+$service|?{$_.key -eq "ntpd"}|Start-VMHostService
+#suppress ssh warning
+$thost=Get-VMHost $vhost -location $dc
+
+$thost| Get-AdvancedSetting UserVars.SuppressShellWarning |Set-AdvancedSetting -Value 1 -Confirm:$false
+
+#ATS heartbeat
+$thost|Get-AdvancedSetting -Name VMFS3.UseATSForHBOnVMFS5| Set-AdvancedSetting -Value 0 -Confirm:$false
+
+#Netpktpool
+$thost|Get-AdvancedSetting -name vmkernel.boot.netPktPoolMaxMBPerGB|Set-AdvancedSetting -Value 8 -Confirm:$false
+
+#create vmk1 
+
+$vswitch =  get-VirtualSwitch -VMHost $vhost -Name $vsw
+New-VMHostNetworkAdapter -vmhost $vhost -VirtualSwitch $vswitch -PortGroup $vpg -IP $vIP -SubnetMask $mask -VMotionEnabled:$true
+#set vlan for vmotion vmkernel
+
+$VMotionPG = Get-VirtualPortgroup -Name  -VMHost $vhost -VirtualSwitch $vswitch
+Set-VirtualPortGroup -VirtualPortGroup $VMotionPG -VlanId $vlan

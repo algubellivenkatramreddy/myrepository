@@ -1,0 +1,19 @@
+vmkping -l vmk5 10.10.6.10
+
+esxcfg-nics -l ----Nics List
+
+
+esxcfg-vswitch -l -- virtual switch names and details it displayes
+
+
+
+esxcli network vswitch standard portgroup list-- port group list it shows
+
+esxcli network ip interface list--it shows which nic connected to which switch
+
+
+esxcli network ip connection list--- it shows the connected IP range (To list established connections on your host you can run:)
+
+
+tcpdump-uw -i vmk0 --- we can see the network traffic via vmk0 nic
+

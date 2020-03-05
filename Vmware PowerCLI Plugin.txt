@@ -1,0 +1,1 @@
+Get-PSSnapin -Registered "*vmware*" | % {Add-PSSnapin -Name $_ -ErrorAction SilentlyContinue}

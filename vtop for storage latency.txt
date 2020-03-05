@@ -1,0 +1,5 @@
+path: F:\Support_logs\vTops
+
+from top 3rd one vtop batch file double click on it.
+
+File--> connect live server---> connect ESXi server

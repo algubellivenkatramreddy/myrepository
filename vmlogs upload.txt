@@ -1,0 +1,6 @@
+sftpsite.vmware.com
+
+uname: inbound
+pass: inbound
+
+create new directory: with support request number

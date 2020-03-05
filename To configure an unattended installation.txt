@@ -1,0 +1,19 @@
+1. Navigate to the installation media and edit the boot.cfg file. Replace
+kernelopt=runweasel with kernelopt=runweasel ks=usb:/ks.cfg. This
+allows the system to automatically use the script located on the USB drive. Make
+sure you use an editor that can handle UNIX encoding.
+2. Create a ks.cfg file in the root directory of the USB device that the installer will
+use for the unattended installation. Edit the file and create the script. You can use
+the following simple script as an example:
+vmaccepteula
+rootpw mypassword
+install --firstdisk –overwritevmfs
+keyboard English
+network --bootproto=dhcp --device=vmnic0
+reboot
+3. Save and close the file. Plug in the USB stick and power on the server.
+4. To manually run the installer script when the ESXi installer window appears,
+press Shift + O to edit boot options. At the runweasel command line, type
+ks=usb:/ks.cfg. To specify the path to an installation script, you may also use
+the command ks=http://ip_address/kickstart/ks.cfg, where the IP
+address refers to the machine where the script resides.

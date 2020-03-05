@@ -1,0 +1,3 @@
+
+~#cd /opt/hp/tools
+/opt/hp/tools #./hponcfg -w /tmp/ilo_config.txt

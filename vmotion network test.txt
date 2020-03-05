@@ -1,0 +1,74 @@
+Purpose
+For troubleshooting purposes, it may be necessary to test VMkernel network connectivity between ESX hosts in your environment. 
+
+This article provides you with the steps to perform a vmkping test between your ESX hosts. 
+
+Resolution
+The vmkping command sources a ping from the local VMkernel port.
+To initiate a vmkping test from the console of an ESX Server host:
+
+Connect to the ESX/ESXi host using an SSH session. For more information, see Tech Support Mode for Emergency Support (1003677) and Using Tech Support Mode in ESXi 4.1 and 5.0 (1017910).
+
+In the command shell, run this command:
+
+# vmkping x.x.x.x
+
+where x.x.x.x is the hostname or IP address of the server that you want to ping.
+
+If you have Jumbo Frames configured in your environment, run the vmkping command with the -s and -d options.
+
+# vmkping -d -s 8972 x.x.x.x
+
+Note: If you have more then one vmkernel port on the same network (such as a heartbeat vmkernel port for iSCSI) then all vmkernel ports on the host on the network would need to be configured with Jumbo Frames (MTU: 9000) too. If there are other vmkernel ports on the same network with a lower MTU then the vmkping command will fail with the -s 8972 option. Here in the command -d option sets DF (Don't Fragment) bit on the IPv4 packet.
+
+In ESXi 5.1 and later, you can specify which vmkernel port to use for outgoing ICMP traffic with the -I option:
+
+# vmkping -I vmkX x.x.x.x
+
+Notes:
+
+ICMP response behavior has changed in ESXi 5.1. For more information, see Change to ICMP ping response behavior in ESXi 5.1 (2042189).
+In releases prior to ESXi 5.1, the host will automatically select the vmkernel port based on the host's vmkernel routing/forwarding table. To display the host's vmkernel routing table, use the esxcfg-route -l command.
+Verification of your MTU size can be obtained from a SSH session by running this command:
+esxcfg-nics -l
+
+Output should be similar to:
+
+# esxcfg-nics -l
+Name PCI Driver Link Speed Duplex MAC Address MTU Description
+vmnic0 0000:02:00.00 e1000 Up 1000Mbps Full xx:xx:xx:xx:xx:xx 9000 Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)
+vmnic1 0000:02:01.00 e1000 Up 1000Mbps Full xx:xx:xx:xx:xx:xx 9000 Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)
+
+esxcfg-vmknic -l
+
+Output should be similar to:
+
+# esxcfg-vmknic -l
+
+Interface Port Group/DVPort IP Family IP Address Netmask Broadcast MAC Address MTU TSO MSS Enabled Type
+
+vmk1 iSCSI IPv4 10.10.10.10 255.255.255.0 10.10.10.255 XX:XX:XX:XX:XX:XX 9000 65535 true STATIC
+
+A successful ping response is similar to:
+# vmkping 10.0.0.1
+PING server(10.0.0.1): 56 data bytes
+64 bytes from 10.0.0.1: icmp_seq=0 ttl=64 time=10.245 ms
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=0.935 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.926 ms
+--- server ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.926/4.035/10.245 ms
+
+An unsuccessful ping response is similar to:
+# vmkping 10.0.0.2
+PING server (10.0.0.2) 56(84) bytes of data.
+--- server ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 3017ms
+
+Notes:
+If you see intermittent ping success, this might indicate you have incompatible NICs teamed on the VMotion port. Either team compatible NICs or set one of the NICs to standby.
+If you do not see a response when pinging by the hostname of the server, initiate a ping to the IP address. Initiating a ping to the IP address allows you to determine if the problem is a result of an issue with hostname resolution. If you are testing connectivity to another VMkernel port on another server remember to use the VMkernel port IP address because the server's hostname usually resolves to the service console address on the remote server.
+In vSphere 5.5 VXLAN has its own vmkernel networking stack therefore ping connectivity testing between two different vmknics on the transport VLAN must be done from the ESXi console with the either of this syntax:
+vmkping ++netstack=vxlan <vmknic IP> -d -s <packet size> 
+
+esxcli network diag ping --netstack=vxlan --host <vmknic IP> --df --size=<packet size>

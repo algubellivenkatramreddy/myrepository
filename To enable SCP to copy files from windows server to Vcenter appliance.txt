@@ -1,0 +1,8 @@
+Below are the steps I used to copy the file from windows server to our appliance
+1.	Enable SSH on the appliance, if you changed the default.
+2.	Login via SSH: root
+3.	Type your root password (often the same PW as your vCenter admin)
+4.	shell.set –enabled True
+5.	shell
+6.	chsh -s /bin/bash root
+7.	chsh -s /bin/appliancesh root

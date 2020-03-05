@@ -1,0 +1,10 @@
+$v_VCServer = 'localhost'
+$v_ADDomain = 'bmcmgt'
+$v_UserName = 'scriptsvc'
+$v_Password = 'Pr0gre$$'
+
+#load VMware Snap
+Add-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContinue
+Connect-VIServer -Server localhost
+
+Get-VIEvent -start (Get-Date).adddays(-1) -MaxSamples 5000 | Where-Object {$_.eventtypeid -eq "com.vmware.vc.ha.VmRestartedByHAEvent"} | Select ObjectName,CreatedTime | Export-Csv C:\temp\VMsRestartedByHA.txt -NoTypeInformation

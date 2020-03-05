@@ -1,0 +1,1 @@
+/opt/vmware/share/vami/vami_config_net

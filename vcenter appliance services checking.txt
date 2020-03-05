@@ -1,0 +1,31 @@
+/opt/vmware/share/vami/vami_config_net --ipconfig
+
+shell.set --enabled true
+shell
+
+dskcvcenter3:~ # cd /bin
+dskcvcenter3:/bin # service-control --list
+applmgmt (VMware Appliance Management Service)
+vmware-cm (VMware Component Manager)
+vmware-eam (VMware ESX Agent Manager)
+vmware-invsvc (VMware Inventory Service)
+vmware-mbcs (VMware Message Bus Configuration Service)
+vmware-netdumper (VMware vSphere ESXi Dump Collector)
+vmware-perfcharts (VMware Performance Charts)
+vmware-rbd-watchdog (VMware vSphere Auto Deploy Waiter)
+vmware-rhttpproxy (VMware HTTP Reverse Proxy)
+vmware-sca (VMware Service Control Agent)
+vmware-sps (VMware vSphere Profile-Driven Storage Service)
+vmware-syslog (VMware Common Logging Service)
+vmware-syslog-health (VMware Syslog Health Service)
+vmware-vapi-endpoint (VMware vAPI Endpoint)
+vmware-vdcs (VMware Content Library Service)
+vmafdd (VMware Authentication Framework)
+vmware-vpostgres (VMware Postgres)
+vmware-vpx-workflow (VMware vCenter Workflow Manager)
+vmware-vpxd (VMware vCenter Server)
+vmware-vsan-health (VMware VSAN Health Service)
+vmware-vsm (VMware vService Manager)
+vsphere-client ()
+vmware-vws (VMware System and Hardware Health Manager)
+dskcvcenter3:/bin # service vmware-invsvc status

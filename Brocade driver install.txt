@@ -1,0 +1,1 @@
+esxcli software vib install -v /vmfs/volumes/59b29a44-6c12d6b8-f6c1-0010185b214c/BCD-ESXi5.5-bfa-3.2.6.0-00000-3000040/scsi-bfa-3.2.6.0-1OEM.550.0.0.1331820.x86_64.vib

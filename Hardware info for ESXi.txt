@@ -1,0 +1,8 @@
+
+
+# esxcfg-info | less -I
+
+You see an output similar to:
+
+|----Product Name.............................................ProLiant DL380 G6
+|----Vendor Name..............................................Hewlett-Packard

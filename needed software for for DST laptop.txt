@@ -1,0 +1,13 @@
+STD softwares
+Adobe Fash is mandatory 
+MS office 2013 (With OneNote)
+Keepass 
+Powershell 5
+PowerCLI 6
+Vpshere Client 6 and 5.5 
+JuniperVPN
+Notepad++
+Goodle Chrome 
+Cisco Webx Client
+ATT connect
+

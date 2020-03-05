@@ -1,0 +1,4 @@
+Please refer to the below KB articles to upload & generate the logs:
+•	http://kb.vmware.com/kb/2069559 > Uploading diagnostic information for VMware through the Secure FTP portal
+•	http://kb.vmware.com/kb/653 > Collecting diagnostic information for VMware ESX/ESXi using the vSphere Client
+•	http://kb.vmware.com/kb/1011641 > Collecting diagnostic information for VMware vCenter Server 4.x/5.x

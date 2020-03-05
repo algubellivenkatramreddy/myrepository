@@ -1,0 +1,55 @@
+Install Plan:
+
+1. Identify host(s) to be upgraded first and set the host in maintenance mode to evacuate it. This will live-migrate hosted guests to other hosts within the cluster. 
+
+2. Once the host has evacuated and entered maintenance mode, 
+
+3 coordinate with Denver associate to get connected CD directly to server and monitor host from remote console and doing host upgrade manually.
+
+4. After the host upgrade has completed, 
+
+5. , verify all the network and storage is visible to the host. Set the vSphere cluster automation to manual, exi maintenance mode on the host and move a virtual machine to the host to test connectivity by performing ping test. 
+
+6. Once network connectivity has been verified, set the vSphere cluster to fully automated to allow the host to repopulate. 
+
+7. Move on to the next host to be upgraded and repeat the above process until all hosts in the cluster have been upgraded.
+
+
+
+Test Plan:
+  We have perform these upgrades in various environments without issues. Ping tests will be performed on a subset of VMs to test connectivity prior to fully populating the host with production workload.
+
+
+Back out Plan :
+If any issue is encountered with a given host, the host will be left out of the pool until the issue is resolved.
+
+
+Service Impact Assessment  : 
+This Environment configured with N+1 redundancy at ESXI host level , during the Upgrade process we will Move all VM to other hosts in the Cluster 
+
+
+Business Justification 
+
+As per part of the standardisation project we are upgrading to latest ESXi versions. 
+
+and I am doing this change 07/09/2017 09:00:00-11:00AM during the day. Because we need Denver
+Data centre associate help in this to insert the CD directly to server because from remote console these hooked up only with keyboard and mouse.
+I attached the email for the same. and I took verbel approval from John to start as it scheduled previous change got rejected and got verbel approval to start as per schedule on DR with New Change no.
+
+
+
+Notes:
+
+Upgrading and/or patching an ESXi host is an identical process wherein the ESXi host is cleared of all Virtual Machines live and then placing the host into Maintenance Mode which disables it from runnings VM workloads. Once cleared, the ESXi host is upgraded and/or patched using an automated tool called VMware Update Manager. After the upgrade or patching is completed the ESXi host is taken out of maintenance mode and a test VM is moved to the host the validate network connectivity, if successful the host is allowed back into the general compute pool and VMs are placed back on it. No downtime expected for any VM workloads the during the entire process.
+
+Up gradation will be done on 2 ESXi hosts with this change and needs a duration of 2 days to get this completed 
+
+upgrading version from Vmware-ESXi-5.5 to Vmware-ESXi-6.0.0-3620759 in DN datacenter ALPSSSRVDR cluster in dskcvcenter3
+
+
+dscovhdnssrvdr01.dstcorp.net
+dscovhdnssrvdr02.dstcorp.net
+
+Summary
+
+upgrading version to Vmware-ESXi-6.0.0-3620759 in DN ALPSSSRVDR cluster in DSKCVCENTER3

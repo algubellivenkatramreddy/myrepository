@@ -1,0 +1,13 @@
+those will verify current settings.  you will likely find they are all set to value of 1:
+
+esxcli system settings advanced list -o /DataMover/HardwareAcceleratedInit 
+esxcli system settings advanced list -o /DataMover/HardwareAcceleratedMove 
+esxcli system settings advanced list -o /VMFS3/HardwareAcceleratedLocking
+
+
+
+those commands will set to new value:
+
+esxcli system settings advanced set --int-value 0 --option /DataMover/HardwareAcceleratedInit 
+esxcli system settings advanced set --int-value 0 --option /DataMover/HardwareAcceleratedMove
+esxcli system settings advanced set --int-value 0 --option /VMFS3/HardwareAcceleratedLocking

@@ -1,0 +1,77 @@
+To enter maintenance mode
+1
+Run esxcli <conn_options> system maintenanceMode set --enable true to enter maintenance mode.
+After all virtual machines on the host have been suspended or migrated, the host enters maintenance mode. You cannot deploy or power on a virtual machine on hosts in maintenance mode.
+2
+Run esxcli <conn_options> system maintenanceMode set --enable false to have a host exit maintenance mode.
+
+***********************************************************************
+/etc/init.d/hostd status
+/etc/init.d/hostd start
+/etc/init.d/hostd stop
+
+
+Run this command to see if hostd is running: 
+
+/etc/init.d/hostd status 
+
+You should see output similar to: 
+
+hostd is running 
+
+Alternatively, run this command:
+
+ps -s | grep hostd
+
+You should see output similar to:
+
+456566 2878 hostd-worker WAIT UFUTEX 0-7 hostd
+456567 2878 hostd-worker WAIT UFUTEX 0-7 hostd
+
+***************************************************************
+If the ESXi host is attached to vCenter Server, run this command to verify that vCenter Server Agent is running: 
+
+/etc/init.d/vpxa status 
+
+You should see an output similar to:
+
+vpxa is running
+
+******************************************************
+You can get a list of all registered VMFS filesystems with this command:
+
+esxcli storage filesystem list
+
+Mount Point                                        Volume Name          UUID                                 Mounted  Type             Size                                                                             Free
+-------------------------------------------------  -------------------  -----------------------------------  -------  ------  -------------  -                                                                  ------------
+/vmfs/volumes/59248889-5890bf6c-77d1-0025b5e0118e  IC-4791-SSRVDR-03BA  59248889-5890bf6c-77d1-0025b5e0118e     true  VMFS-5  4294698860544  4                                                                  170721525760
+/vmfs/volumes/595fa560-b793d933-4809-0025b5e0114e  datastore1 (8)       595fa560-b793d933-4809-0025b5e0114e     true  VMFS-5    45634027520                                                                      44613763072
+/vmfs/volumes/5620970e-d5ee7744-0b77-0025b5e0118e  IC-4791-SSRVDR-0047  5620970e-d5ee7744-0b77-0025b5e0118e     true  VMFS-5  4294698860544  2                                                                  828543197184
+/vmfs/volumes/5228e761-05d8d0e1-ef14-0025b5e0118e  IC-4791-SSRVDR-014A  5228e761-05d8d0e1-ef14-0025b5e0118e     true  VMFS-5  2147215212544                                                                     927769559040
+/vmfs/volumes/cc7f3675-a15021f7-704d-968dd4ea0208                       cc7f3675-a15021f7-704d-968dd4ea0208     true  vfat        261853184                                                                         69197824
+/vmfs/volumes/595fa563-68dd7d3e-8cbd-0025b5e0114e                       595fa563-68dd7d3e-8cbd-0025b5e0114e     true  vfat       4293591040                                                                       4260888576
+/vmfs/volumes/8ca88e73-fc088ba8-42c9-88fafeae3b18                       8ca88e73-fc088ba8-42c9-88fafeae3b18     true  vfat        261853184                                                                         82604032
+/vmfs/volumes/595fa54f-920872d4-aa1b-0025b5e0114e                       595fa54f-920872d4-aa1b-0025b5e0114e     true  vfat        299712512 
+********************************************************************************************************************************************
+
+esxcfg-scsidevs -m --to check all naa numbers at one go
+naa.60060e8006d607000000d607000003ba:1                           /vmfs/devices/disks/naa.60060e8006d607000000d607000003ba:1 59248889-5890bf6c-77d1-0025b5e0118e  0  IC-4791-SSRVDR-03BA
+naa.60060e8006d607000000d60700000134:3                           /vmfs/devices/disks/naa.60060e8006d607000000d60700000134:3 595fa560-b793d933-4809-0025b5e0114e  0  datastore1 (8)
+naa.60060e8006d607000000d60700000047:1                           /vmfs/devices/disks/naa.60060e8006d607000000d60700000047:1 5620970e-d5ee7744-0b77-0025b5e0118e  0  IC-4791-SSRVDR-0047
+naa.60060e8006d607000000d6070000014a:1                           /vmfs/devices/disks/naa.60060e8006d607000000d6070000014a:1 5228e761-05d8d0e1-ef14-0025b5e0118e  0  IC-4791-SSRVDR-014A
+[root@dsslvhicssrvdr02:/vmfs/volumes]
+
+***************************************************
+cd /usr/sbin-- can see all list of commands 
+
+**************************************************
+get Dns settings of ESXI 
+
+
+$Hosts =  Get-VMHost dsslvhicssrvdr01.dstcorp.net,dsslvhiche2dr01.dstcorp.net
+
+$Hosts | Get-VMHostNetwork | Select-Object -Property HostName,DnsAddress 
+
+
+
+

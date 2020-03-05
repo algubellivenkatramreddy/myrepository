@@ -1,0 +1,5 @@
+chrome://settings/content/flash
+
+go to ADD
+
+add URL and close 

@@ -1,0 +1,5 @@
+the red means capacity hold,
+the orange me pending capacity approval which means dont touch until I hear back from capacity. 
+if they approve it goes yellow 
+
+and if they dont approve it goes red. 

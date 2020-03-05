@@ -1,0 +1,13 @@
+FYI, if you have not seen our documented process, these are a few things that we need to do during an upgrade/fresh install of esxi:
+habibulla.shaik@capgemini.com
+-Add Host to VDS switches
+                -Prod Switch (Uplinks 4 & 5)
+                -Repnet switch (Uplinks 6 & 7)
+                -VM MGMT switch (Uplinks 8 & 9)
+-configure MGMT IP
+-configure vMotion
+-Enable SSH
+-Enable NTP (10.192.78.81, 10.192.78.82)
+-Configure & Test vMotion VMK
+-Disable VMFS ATS Setting
+
