@@ -1,0 +1,10 @@
+1) During upgrade we found some of the dvswitches running with older version 4.0 which won’t be supported by 6.7 vcenter. So had to upgrade them to 6.0 to get vcenter upgraded successful.
+Now we are good with vcenter new version (11727113)
+
+Error
+Source vCenter Server has instance(s) of Distributed Virtual Switch at unsupported version.
+Resolution
+Distributed Virtual Switches with versions lower than 6.0.0 are not supported with vCenter Server 6.7. Upgrade these Distributed Switches to version 6.0.0 or later to be able proceed with the upgrade of vCenter Server. For more information see Knowledge Base article 52826.
+************************
+
+2) we need management port group(vlan of vcenter) shoud be configured on standard switch during upgrade. because if vlan is running on dvswitch it won't recognised vlan

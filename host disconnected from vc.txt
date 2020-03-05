@@ -1,0 +1,35 @@
+1)The reason for the host to non-responsive was due to host not able to access the storage.
+The host is designed to stop the hostd service once it not able to process the i/o's and perform any read/write operation on datastore.
+The hostd service went un-responsive after multiple try from host to connect to storage and once hostd stopped the host disconnected from vCenter.
+
+
+Below mentioned host went to not responding state on 2019-02-15 Time 21:31:34.
+We have checked with VMware for root cause, they found it naa.60000970000197000397533030444534 it reached high i/o not able to perform read/write operations on data store.
+That the reason Hostd service stopped on host and it went not responding from vcenter.
+
+2)
+Below Pillars are HDD Firmware Excluded in firmware package, so when we had done UCSM firmware upgrade to 4.0, 
+Below mentioned Pillars HDD firmware had been missed (as HDD Excluded at the time of environment configurations)
+So Cisco recommended to upgrade to only HDD firmware upgrade after they reviewed logs and now we are in progress.
+Pillar01
+Pillar02 (upgraded HHD firmware in one of the rack mounts in pillar02 (p02h09 host) So far not seen any errors
+Pillar05 
+Pillar06
+Pillar07
+
+HDD Firmware not Excluded in firmware package: 
+Pillar03 
+Pillar04
+So whenever we have done cisco UCSM firmware upgrade to 4.0(1) HDD drivers Firmware also had been upgraded.
+So HDD Firmware also upgrade to new version here (GXT51F3Q)
+
+WebEx summary:
+===============
++ Previous engineer suggested to upgrade firmware on the server to upgrade the Hard Drive firmware
++ Have verified the domain P04H0X and found that all the rack-servers are already in 4.0(1) firmware and even hard drives firmware are upgraded to GXT51F3Q
++ This environment is already running in fixed release according to the bug CSCvj90575 which is provided by previous engineer
++ On Domain P02H09 rack-server are still in 3.2(2b) firmware and Hard-drive firmware is 0F3Q, previous engineer analyzed the logs and provided the bug for the same domain
+
+So I would request you to upgrade the firmware to 3.2(3e) on Server 9 of domain P02H09 and make sure Hard Drives firmware’s are upgraded.
+Since domain P04H0X is already in fixed release, I would request you to engage VMware team to look into this domain hosts and check if they are still seeing any PSOD issue.”
+

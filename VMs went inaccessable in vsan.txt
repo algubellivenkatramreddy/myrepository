@@ -1,0 +1,8 @@
+total we have 16 esxi hosts in cluster
+each host is having 3 disk groups in cluster.
+1 host is having vsan version v5 and some other hosts are having v7.
+
+in vsan cluster total we have 140TB free space but some vms got error no disk free space to write and got hung
+
+after seen vsan versions which is running vsan v5 version , those VMs won't be migrated to v7 which wont support. thats the reson v5 disk groups full and vms went inaccessable. we have upgraded vsan environment to v7. than vm objects got rebalnced issue fixed.
+

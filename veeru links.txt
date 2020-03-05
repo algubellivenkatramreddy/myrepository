@@ -1,0 +1,12 @@
+https://www.youtube.com/watch?v=lDxSLzoIjFo&list=PLie35GAskAJkwWPYtU-uMMFXE_eOjYzTa
+
+https://www.youtube.com/watch?v=2RZQN_ko0iU
+
+
+https://livestream.com/gaelcolas/events/8824779/videos/196854817  ---powershell
+
+http://www.pearsonitcertification.com/store/essential-virtual-san-vsan-administrators-guide-to-9780133854992?w_ptgrevartcl=Administrator%27s+Guide+to+VMware+Virtual+SAN%3a+Introduction+to+VSAN_2237915   -vsan
+
+https://www.youtube.com/watch?v=_GKIHC-keU8&list=PLxiy1zhSV1zpvGtsiSObcqbJOliMPKqWo&index=3    nsx
+
+Introduction to Network Virtualization with NSX (https://mylearn.vmware.com/mgrReg/courses.cfm?ui=www_edu&a=one&id_subject=83363)
